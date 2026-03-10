@@ -302,6 +302,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+  direction: ltr;
 }
 .cell {
   border: 0.5px solid #ccc8;
@@ -339,8 +340,8 @@ body {
 .cell-num {
   position: absolute;
   top: 1px;
-  right: 2px;
-  font-size: clamp(0.35rem, 1.1vw, 0.6rem);
+  left: 2px;
+  font-size: clamp(0.6rem, 1.1vw, 0.8rem);
   opacity: 0.65;
   font-family: "Fredoka One", cursive;
 }
@@ -375,8 +376,8 @@ body {
   border: 2px solid white;
   box-shadow: 0 2px 8px #0007;
   transition:
-    left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
-    top 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    left 1s cubic-bezier(0.34, 1.56, 0.64, 1),
+    top 1s cubic-bezier(0.34, 1.56, 0.64, 1);
   z-index: 10;
 }
 .pawn.bounce {
@@ -434,12 +435,19 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+  min-width: 180px;
+  background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 100%);
+  border-left: 1px solid #3a2060;
 }
 .dice-row {
   display: flex;
-  gap: 24px;
+  flex-direction: column;
+  gap: 16px;
   perspective: 1200px;
+  align-items: center;
 }
 .die-container {
   width: 80px;
@@ -479,13 +487,16 @@ body {
   grid-template-rows: repeat(3, 1fr);
   align-items: center;
   justify-items: center;
-  font-size: 1.8rem;
+  font-size: 0.75rem;
   font-weight: bold;
   border: 2px solid rgba(0,0,0,0.2);
+  border-radius: 10px;
   background: white;
   backface-visibility: hidden;
   box-shadow: 0 4px 12px rgba(128, 128, 128, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.8);
-  color: #333;
+  color: #1a1a1a;
+  padding: 6px;
+  overflow: hidden;
 }
 .die-face.face-1 {
   transform: translateZ(40px);
@@ -774,6 +785,17 @@ body {
   .dice-area {
     flex-direction: row;
     align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-left: none;
+    border-top: 1px solid #3a2060;
+    padding: 15px;
+    min-width: auto;
+    gap: 15px;
+  }
+  .dice-row {
+    flex-direction: row;
+    gap: 12px;
   }
   .legend {
     display: none;

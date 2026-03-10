@@ -50,34 +50,37 @@
       </div>
     </div>
 
+    <!-- DICE AREA -->
+    <div class="dice-area">
+      <div class="dice-row">
+        <div class="die-container" id="die1-container">
+          <div class="die-cube" id="die1">
+            <div class="die-face face-1"><span>●</span></div>
+            <div class="die-face face-2"><span>●</span><span>●</span></div>
+            <div class="die-face face-3"><span>●</span><span>●</span><span>●</span></div>
+            <div class="die-face face-4"><span>●</span><span>●</span><span>●</span><span>●</span></div>
+            <div class="die-face face-5"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
+            <div class="die-face face-6"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
+          </div>
+        </div>
+        <div class="die-container" id="die2-container">
+          <div class="die-cube" id="die2">
+            <div class="die-face face-1"><span>●</span></div>
+            <div class="die-face face-2"><span>●</span><span>●</span></div>
+            <div class="die-face face-3"><span>●</span><span>●</span><span>●</span></div>
+            <div class="die-face face-4"><span>●</span><span>●</span><span>●</span><span>●</span></div>
+            <div class="die-face face-5"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
+            <div class="die-face face-6"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
+          </div>
+        </div>
+      </div>
+      <button class="roll-btn" id="roll-btn" onclick="rollDice()">🎲 הטל קוביות</button>
+    </div>
+
     <!-- SIDE PANEL -->
     <div class="side-panel">
       <div class="status-box" id="status-msg">טוען...</div>
-      <div class="dice-area">
-        <div class="dice-row">
-          <div class="die-container" id="die1-container">
-            <div class="die-cube" id="die1">
-              <div class="die-face face-1"><span>●</span></div>
-              <div class="die-face face-2"><span>●</span><span>●</span></div>
-              <div class="die-face face-3"><span>●</span><span>●</span><span>●</span></div>
-              <div class="die-face face-4"><span>●</span><span>●</span><span>●</span><span>●</span></div>
-              <div class="die-face face-5"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
-              <div class="die-face face-6"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
-            </div>
-          </div>
-          <div class="die-container" id="die2-container">
-            <div class="die-cube" id="die2">
-              <div class="die-face face-1"><span>●</span></div>
-              <div class="die-face face-2"><span>●</span><span>●</span></div>
-              <div class="die-face face-3"><span>●</span><span>●</span><span>●</span></div>
-              <div class="die-face face-4"><span>●</span><span>●</span><span>●</span><span>●</span></div>
-              <div class="die-face face-5"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
-              <div class="die-face face-6"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
-            </div>
-          </div>
-        </div>
-        <button class="roll-btn" id="roll-btn" onclick="rollDice()">🎲 הטל קוביות</button>
-      </div>
+     
       <div class="legend">
         <b>מפתח:</b>
         <div class="legend-item">🪜 סולם – עולים!</div>

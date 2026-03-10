@@ -25,7 +25,10 @@ const LADDERS = {
   71: 91,
 };
 const TRIVIA_CELLS = [
-  2, 10, 18, 16, 25, 24, 32, 40, 48, 55, 62, 70, 78, 85, 92,
+  ...Array.from(
+    { length: 30 },
+    (_, i) => 3 * i + Math.ceil(Math.random() * 3 + 1),
+  ),
 ];
 const DIE_FACES = ["⚀", "⚁", "⚂", "⚃", "⚄", "⚅"];
 
@@ -366,8 +369,8 @@ function updatePawns() {
     idxs.forEach((i, j) => {
       const pawn = document.createElement("div");
       pawn.className = "pawn";
-      pawn.id = `pawn-${i}`;
-      pawn.style.cssText = `width:${pSize}px;height:${pSize}px;font-size:${pSize * 0.52}px;background:${PCOLORS[i]};left:${center.x - pSize / 2 + (j - (n - 1) / 2) * 16}px;top:${center.y - pSize / 2}px;`;
+      pawn.id = `pawn=-${i}`;
+      pawn.style.cssText = `width:${pSize}px;height:${pSize}px;font-size:${pSize * 0.52}px;background:${PCOLORS[i]};left:${center.x - pSize / 2 + (j - (n - 1) / 2) * 16}px;top:${center.y - pSize / 2}px;position:absolute;`;
       pawn.textContent = players[i].avatar;
       layer.appendChild(pawn);
     });
