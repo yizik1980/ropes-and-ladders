@@ -1,0 +1,19 @@
+{
+  "name": "ropes-and-ladders",
+  "version": "1.0.0",
+  "description": "Interactive Snakes and Ladders game with Hebrew letter guessing",
+  "main": "script.js",
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js --watch"
+  },
+  "keywords": ["game", "snakes", "ladders"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "esbuild": "^0.19.0",
+    "cssnano": "^6.0.0",
+    "postcss": "^8.4.0",
+    "html-minifier": "^4.0.0"
+  }
+}
