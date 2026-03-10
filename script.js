@@ -70,10 +70,10 @@ const TRIVIA = [
   },
   {
     img: "🐑",
-    name: "ופל",
+    name: "כבשה",
     firstLetter: "ו",
-    opts: ["ה", "ו", "ז", "ח"],
-    ans: "ו",
+    opts: ["ה", "כ", "ז", "ח"],
+    ans: "כ",
   },
   {
     img: "🫒",
