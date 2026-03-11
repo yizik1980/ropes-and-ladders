@@ -399,16 +399,12 @@ function startGame() {
   setTimeout(() => {
     updatePawns();
     renderStrip();
-    setStatus(`תור של <b>${players[0].name} ${players[0].avatar}</b>`);
     setDiceFaceRotation(document.getElementById("die1"), 1);
     setDiceFaceRotation(document.getElementById("die2"), 1);
     document.getElementById("roll-btn").disabled = false;
   }, 150);
 }
 
-function setStatus(msg) {
-  document.getElementById("status-msg").innerHTML = msg;
-}
 
 function rollDice() {
   if (!gameStarted || triviaActive) return;
@@ -427,7 +423,6 @@ function rollDice() {
     setDiceFaceRotation(die2, d2);
   }, 600);
   const p = players[currentPlayer];
-  setStatus(`${p.avatar} <b>${p.name}</b>: ${d1}+${d2}=<b>${tot}</b>`);
   setTimeout(() => movePlayer(currentPlayer, tot), 800);
 }
 
@@ -467,7 +462,6 @@ function checkCell(idx, pos) {
   }
   if (SNAKES[pos]) {
     const np = SNAKES[pos];
-    setStatus(`😱 חבל! ${p.avatar} נפל מ-${pos} ל-${np}!`);
     setTimeout(() => {
       p.pos = np;
       updatePawns();
@@ -478,7 +472,6 @@ function checkCell(idx, pos) {
   }
   if (LADDERS[pos]) {
     const np = LADDERS[pos];
-    setStatus(`🪜 סולם! ${p.avatar} עלה מ-${pos} ל-${np}!`);
     setTimeout(() => {
       p.pos = np;
       updatePawns();
@@ -498,7 +491,6 @@ function nextTurn() {
   currentPlayer = (currentPlayer + 1) % players.length;
   renderStrip();
   const p = players[currentPlayer];
-  setStatus(`תור של <b>${p.name} ${p.avatar}</b>`);
   document.getElementById("roll-btn").disabled = false;
 }
 
@@ -541,7 +533,6 @@ function answerTrivia(ans, q, idx, btn) {
       p.pos = Math.min(p.pos + 3, 100);
       updatePawns();
       renderStrip();
-      setStatus(`✅ נכון! ${p.avatar} <b>${p.name}</b> +3 תאים!`);
       if (p.pos === 100) {
         showWinner(idx);
         return;
@@ -560,7 +551,6 @@ function answerTrivia(ans, q, idx, btn) {
       p.pos = Math.max(p.pos - 2, 1);
       updatePawns();
       renderStrip();
-      setStatus(`❌ טעות. ${p.avatar} <b>${p.name}</b> -2 תאים.`);
       setTimeout(() => nextTurn(), 1000);
     }, 2100);
   }
