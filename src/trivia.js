@@ -1,14 +1,15 @@
-import { TRIVIA } from './constants.js';
-import { state } from './state.js';
-import { updatePawns, renderStrip } from './players.js';
+import { TRIVIA } from "./constants.js";
+import { state } from "./state.js";
+import { updatePawns, renderStrip } from "./players.js";
 // game.js imports are resolved lazily (circular deps are fine in ES modules)
-import { setStatus, nextTurn, showWinner } from './game.js';
+import { nextTurn, showWinner } from "./game.js";
 
 export function showTrivia(idx) {
   state.triviaActive = true;
   state.triviaAnswered = false;
   const q = TRIVIA[Math.floor(Math.random() * TRIVIA.length)];
-  document.getElementById("trivia-question").textContent = "באיזה אות זה מתחיל?";
+  document.getElementById("trivia-question").textContent =
+    "באיזה אות זה מתחיל?";
   document.getElementById("trivia-sign-display").innerHTML =
     `<div style="font-size:8rem;margin-bottom:30px">${q.img}</div>`;
   document.getElementById("trivia-result").className = "trivia-result";
@@ -41,8 +42,10 @@ export function answerTrivia(ans, q, idx, btn) {
       p.pos = Math.min(p.pos + 3, 100);
       updatePawns();
       renderStrip();
-      setStatus(`✅ נכון! ${p.avatar} <b>${p.name}</b> +3 תאים!`);
-      if (p.pos === 100) { showWinner(idx); return; }
+      if (p.pos === 100) {
+        showWinner(idx);
+        return;
+      }
       setTimeout(() => nextTurn(), 1000);
     }, 1700);
   } else {
@@ -57,7 +60,6 @@ export function answerTrivia(ans, q, idx, btn) {
       p.pos = Math.max(p.pos - 2, 1);
       updatePawns();
       renderStrip();
-      setStatus(`❌ טעות. ${p.avatar} <b>${p.name}</b> -2 תאים.`);
       setTimeout(() => nextTurn(), 1000);
     }, 2100);
   }

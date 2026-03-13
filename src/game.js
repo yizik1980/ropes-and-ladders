@@ -1,4 +1,4 @@
-import { AVATARS, PCOLORS, SNAKES, LADDERS } from './constants.js';
+import { PCOLORS, SNAKES, LADDERS } from './constants.js';
 import { TRIVIA_CELLS, state } from './state.js';
 import { buildBoard, drawOverlay } from './board.js';
 import { renderStrip, updatePawns } from './players.js';
@@ -18,22 +18,16 @@ export function setDiceFaceRotation(dieElement, faceNumber) {
   dieElement.style.transform = DIE_ROTATIONS[faceNumber];
 }
 
-export function setStatus(msg) {
-  document.getElementById("status-msg").innerHTML = msg;
-}
 
 export function startGame() {
-  state.players = [];
-  for (let i = 0; i < state.numPlayers; i++) {
-    const name = document.getElementById(`pname-${i}`)?.value?.trim() || `שחקן ${i + 1}`;
+  state.players.forEach((p, i) => {
+    const nameInput = document.getElementById(`pname-${i}`);
+    if (nameInput?.value?.trim()) p.name = nameInput.value.trim();
     const sel = document.querySelector(`#avatars-${i} .avatar-opt.selected`);
-    state.players.push({
-      name,
-      avatar: sel ? sel.textContent : AVATARS[i],
-      pos: 1,
-      color: PCOLORS[i],
-    });
-  }
+    if (sel) p.avatar = sel.textContent;
+    p.pos = 1;
+    p.color = PCOLORS[i];
+  });
   state.currentPlayer = 0;
   state.gameStarted = true;
   document.getElementById("setup-screen").classList.remove("active");
@@ -42,7 +36,6 @@ export function startGame() {
   setTimeout(() => {
     updatePawns();
     renderStrip();
-    setStatus(`תור של <b>${state.players[0].name} ${state.players[0].avatar}</b>`);
     setDiceFaceRotation(document.getElementById("die1"), 1);
     setDiceFaceRotation(document.getElementById("die2"), 1);
     document.getElementById("roll-btn").disabled = false;
@@ -66,7 +59,6 @@ export function rollDice() {
     setDiceFaceRotation(die2, d2);
   }, 600);
   const p = state.players[state.currentPlayer];
-  setStatus(`${p.avatar} <b>${p.name}</b>: ${d1}+${d2}=<b>${tot}</b>`);
   setTimeout(() => movePlayer(state.currentPlayer, tot), 800);
 }
 
@@ -91,7 +83,6 @@ export function checkCell(idx, pos) {
   if (pos === 100) { showWinner(idx); return; }
   if (SNAKES[pos]) {
     const np = SNAKES[pos];
-    setStatus(`😱 חבל! ${p.avatar} נפל מ-${pos} ל-${np}!`);
     setTimeout(() => {
       p.pos = np;
       updatePawns();
@@ -102,7 +93,6 @@ export function checkCell(idx, pos) {
   }
   if (LADDERS[pos]) {
     const np = LADDERS[pos];
-    setStatus(`🪜 סולם! ${p.avatar} עלה מ-${pos} ל-${np}!`);
     setTimeout(() => {
       p.pos = np;
       updatePawns();
@@ -121,8 +111,6 @@ export function checkCell(idx, pos) {
 export function nextTurn() {
   state.currentPlayer = (state.currentPlayer + 1) % state.players.length;
   renderStrip();
-  const p = state.players[state.currentPlayer];
-  setStatus(`תור של <b>${p.name} ${p.avatar}</b>`);
   document.getElementById("roll-btn").disabled = false;
 }
 

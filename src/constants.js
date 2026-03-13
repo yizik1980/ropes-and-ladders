@@ -34,3 +34,7 @@ export const TRIVIA = [
   { img: "⏰", name: "שעון",    opts: ["ר", "ש", "ת", "א"], ans: "ש" },
   { img: "🍎", name: "תפוח",    opts: ["ש", "ת", "א", "ב"], ans: "ת" },
 ];
+
+export const HebLabel = {
+  player:'שחקן',
+}
