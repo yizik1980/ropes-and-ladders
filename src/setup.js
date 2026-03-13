@@ -1,4 +1,4 @@
-import { AVATARS, PCOLORS } from "./constants.js";
+import { AVATARS, PCOLORS, HebLabel } from "./constants.js";
 import { state, storage } from "./state.js";
 import { Input, Player } from "./player.js";
 

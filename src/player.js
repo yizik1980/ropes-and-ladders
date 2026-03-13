@@ -1,5 +1,3 @@
-import { HebLabel } from "./constants.js";
-
 export class Player {
   name = "";
   score = 0;
