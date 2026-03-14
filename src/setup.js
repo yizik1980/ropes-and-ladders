@@ -11,11 +11,11 @@ export function setPlayerCount(n) {
 }
 
 export function renderSetupCards() {
+  state.players = [];
   const c = document.getElementById("players-setup");
   c.innerHTML = "";
   for (let i = 0; i < state.numPlayers; i++) {
     const savedNames = JSON.parse(storage.getItem("players")) || [];
-    console.log(savedNames);
     let player = savedNames?.[i]
       ? new Player(
           savedNames?.[i].name,
