@@ -1,9 +1,9 @@
-import { PCOLORS, SNAKES, LADDERS } from './constants.js';
-import { TRIVIA_CELLS, state } from './state.js';
-import { buildBoard, drawOverlay } from './board.js';
-import { renderStrip, updatePawns } from './players.js';
-import { renderSetupCards } from './setup.js';
-import { showTrivia } from './trivia.js';
+import { PCOLORS, SNAKES, LADDERS } from "./constants.js";
+import { TRIVIA_CELLS, state } from "./state.js";
+import { buildBoard, drawOverlay } from "./board.js";
+import { renderStrip, updatePawns } from "./players.js";
+import { renderSetupCards } from "./setup.js";
+import { showTrivia } from "./trivia.js";
 
 const DIE_ROTATIONS = {
   1: "rotateX(0deg) rotateY(0deg)",
@@ -18,7 +18,6 @@ export function setDiceFaceRotation(dieElement, faceNumber) {
   dieElement.style.transform = DIE_ROTATIONS[faceNumber];
 }
 
-
 export function startGame() {
   state.players.forEach((p, i) => {
     const nameInput = document.getElementById(`pname-${i}`);
@@ -30,6 +29,11 @@ export function startGame() {
   });
   state.currentPlayer = 0;
   state.gameStarted = true;
+  fetch(`${process.env.API_URL}/api/game`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ players: state.players.map((p) => p.name) }),
+  }).catch(() => {});
   document.getElementById("setup-screen").classList.remove("active");
   document.getElementById("game-screen").classList.add("active");
   buildBoard();
@@ -80,7 +84,10 @@ export function movePlayer(idx, steps) {
 
 export function checkCell(idx, pos) {
   const p = state.players[idx];
-  if (pos === 100) { showWinner(idx); return; }
+  if (pos === 100) {
+    showWinner(idx);
+    return;
+  }
   if (SNAKES[pos]) {
     const np = SNAKES[pos];
     setTimeout(() => {
@@ -120,7 +127,14 @@ export function showWinner(idx) {
   document.getElementById("win-name").textContent = p.name;
   document.getElementById("game-screen").classList.remove("active");
   document.getElementById("win-screen").classList.add("active");
-  const cols = ["#ffd700", "#ff6b35", "#00c9a7", "#ff4d8d", "#4d9fff", "#a855f7"];
+  const cols = [
+    "#ffd700",
+    "#ff6b35",
+    "#00c9a7",
+    "#ff4d8d",
+    "#4d9fff",
+    "#a855f7",
+  ];
   for (let i = 0; i < 90; i++) {
     setTimeout(() => {
       const el = document.createElement("div");

@@ -1,10 +1,12 @@
-const fs = require('fs');
-const path = require('path');
-const esbuild = require('esbuild');
-const postcss = require('postcss');
-const cssnano = require('cssnano');
-const minifier = require('html-minifier');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import * as esbuild from 'esbuild';
+import postcss from 'postcss';
+import cssnano from 'cssnano';
+import minifier from 'html-minifier';
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const distDir = path.join(__dirname, 'dist');
 
 if (!fs.existsSync(distDir)) {
@@ -20,6 +22,9 @@ async function minifyJS() {
       outfile: path.join(distDir, 'script.min.js'),
       platform: 'browser',
       target: 'es2020',
+      define: {
+        'process.env.API_URL': JSON.stringify(process.env.API_URL || 'http://localhost:3000'),
+      },
     });
     console.log('✓ JavaScript bundled & minified: dist/script.min.js');
   } catch (error) {

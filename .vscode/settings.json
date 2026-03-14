@@ -1,0 +1,8 @@
+{
+  "liveServer.settings.ignoreFiles": [
+    "**/*.csv",
+    ".vscode/**",
+    "node_modules/**",
+    "dist/**"
+  ]
+}
