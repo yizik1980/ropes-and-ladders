@@ -5,9 +5,9 @@
   "main": "script.js",
   "type": "module",
   "scripts": {
-    "build": "node build.js",
-    "dev": "node build.js --watch",
-    "start": "node server.js"
+    "build": "node --env-file=.env build.js",
+    "dev": "node --env-file=.env build.js --watch",
+    "start": "node --env-file=.env server.js"
   },
   "keywords": [
     "game",

@@ -29,11 +29,13 @@ export function startGame() {
   });
   state.currentPlayer = 0;
   state.gameStarted = true;
-  fetch(`${process.env.API_URL}/api/game`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ players: state.players.map((p) => p.name) }),
-  }).catch(() => {});
+  if (process.env.API_URL) {
+    fetch(`${process.env.API_URL}/api/game`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ players: state.players.map((p) => p.name) }),
+    }).catch(() => {});
+  }
   document.getElementById("setup-screen").classList.remove("active");
   document.getElementById("game-screen").classList.add("active");
   buildBoard();

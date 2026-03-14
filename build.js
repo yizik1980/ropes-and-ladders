@@ -23,7 +23,7 @@ async function minifyJS() {
       platform: 'browser',
       target: 'es2020',
       define: {
-        'process.env.API_URL': JSON.stringify(process.env.API_URL || 'http://localhost:3000'),
+        'process.env.API_URL': JSON.stringify(process.env.API_URL || ''),
       },
     });
     console.log('✓ JavaScript bundled & minified: dist/script.min.js');

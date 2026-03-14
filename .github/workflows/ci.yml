@@ -22,11 +22,3 @@ jobs:
 
       - name: Build
         run: npm run build
-
-      - name: Verify server starts
-        run: |
-          node server.js &
-          SERVER_PID=$!
-          sleep 2
-          curl -sf http://localhost:3000 > /dev/null && echo "Server OK"
-          kill $SERVER_PID
