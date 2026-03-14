@@ -5,9 +5,9 @@
   "main": "script.js",
   "type": "module",
   "scripts": {
-    "build": "node --env-file=.env build.js",
-    "dev": "node --env-file=.env build.js --watch",
-    "start": "node --env-file=.env server.js"
+    "build": "node --env-file-if-exists=.env build.js",
+    "dev": "node --env-file-if-exists=.env build.js --watch",
+    "start": "node --env-file-if-exists=.env server.js"
   },
   "keywords": [
     "game",
