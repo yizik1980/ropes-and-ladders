@@ -4,6 +4,7 @@ import { buildBoard, drawOverlay } from "./board.js";
 import { renderStrip, updatePawns } from "./players.js";
 import { renderSetupCards } from "./setup.js";
 import { showTrivia } from "./trivia.js";
+import { playDiceRoll, playMove, playLadder, playSnake, playWin } from "./sounds.js";
 
 const DIE_ROTATIONS = {
   1: "rotateX(0deg) rotateY(0deg)",
@@ -56,6 +57,7 @@ export function rollDice() {
     tot = d1 + d2;
   const die1 = document.getElementById("die1"),
     die2 = document.getElementById("die2");
+  playDiceRoll();
   die1.classList.add("rolling");
   die2.classList.add("rolling");
   setTimeout(() => {
@@ -71,6 +73,7 @@ export function rollDice() {
 export function movePlayer(idx, steps) {
   const p = state.players[idx];
   p.pos = Math.min(p.pos + steps, 100);
+  playMove();
   updatePawns();
   const pawn = document.getElementById(`pawn-${idx}`);
   if (pawn) {
@@ -92,6 +95,7 @@ export function checkCell(idx, pos) {
   }
   if (SNAKES[pos]) {
     const np = SNAKES[pos];
+    playSnake();
     setTimeout(() => {
       p.pos = np;
       updatePawns();
@@ -102,6 +106,7 @@ export function checkCell(idx, pos) {
   }
   if (LADDERS[pos]) {
     const np = LADDERS[pos];
+    playLadder();
     setTimeout(() => {
       p.pos = np;
       updatePawns();
@@ -124,6 +129,7 @@ export function nextTurn() {
 }
 
 export function showWinner(idx) {
+  playWin();
   const p = state.players[idx];
   document.getElementById("win-avatar").textContent = p.avatar;
   document.getElementById("win-name").textContent = p.name;

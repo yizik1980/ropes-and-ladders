@@ -9,9 +9,9 @@ export function showTrivia(idx) {
   state.triviaAnswered = false;
   const q = TRIVIA[Math.floor(Math.random() * TRIVIA.length)];
   document.getElementById("trivia-question").textContent =
-    "באיזה אות זה מתחיל?";
+    `איזו חיה מתחילה באות "${q.img}"?`;
   document.getElementById("trivia-sign-display").innerHTML =
-    `<div style="font-size:8rem;margin-bottom:30px">${q.img}</div>`;
+    `<div style="font-size:8rem;margin-bottom:20px;font-weight:bold;color:var(--blue)">${q.img}</div>`;
   document.getElementById("trivia-result").className = "trivia-result";
   const oc = document.getElementById("trivia-options");
   oc.innerHTML = "";
@@ -19,8 +19,8 @@ export function showTrivia(idx) {
     const btn = document.createElement("button");
     btn.className = "trivia-opt";
     btn.textContent = opt;
-    btn.style.fontSize = "2rem";
-    btn.style.padding = "20px 40px";
+    btn.style.fontSize = "1.4rem";
+    btn.style.padding = "16px 28px";
     btn.onclick = () => answerTrivia(opt, q, idx, btn);
     oc.appendChild(btn);
   });

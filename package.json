@@ -1,28 +1,11 @@
 {
-  "name": "ropes-and-ladders",
-  "version": "1.0.0",
-  "description": "Interactive Snakes and Ladders game with Hebrew letter guessing",
-  "main": "script.js",
-  "type": "module",
+  "name": "ropes-and-ladders-workspace",
+  "private": true,
+  "workspaces": ["packages/*"],
   "scripts": {
-    "build": "node --env-file-if-exists=.env build.js",
-    "dev": "node --env-file-if-exists=.env build.js --watch",
-    "start": "node --env-file-if-exists=.env server.js"
-  },
-  "keywords": [
-    "game",
-    "snakes",
-    "ladders"
-  ],
-  "author": "",
-  "license": "MIT",
-  "devDependencies": {
-    "cssnano": "^6.0.0",
-    "esbuild": "^0.19.0",
-    "html-minifier": "^4.0.0",
-    "postcss": "^8.4.0"
-  },
-  "dependencies": {
-    "express": "^5.2.1"
+    "build": "npm run build -w packages/client",
+    "start": "npm start -w packages/server",
+    "dev:client": "npm run dev -w packages/client",
+    "dev:server": "npm run dev -w packages/server"
   }
 }

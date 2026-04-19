@@ -765,3 +765,151 @@ body {
     transform: rotate(360deg);
   }
 }
+/* ── UTILITY ── */
+.hidden { display: none !important; }
+
+/* ── MODE TABS ── */
+.mode-tabs {
+  display: flex;
+  gap: 8px;
+  background: #2a1650;
+  border-radius: 16px;
+  padding: 6px;
+}
+.mode-tab {
+  flex: 1;
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: none;
+  font-family: "Heebo", sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: transparent;
+  color: #a0a0c0;
+  transition: all .2s;
+}
+.mode-tab.active {
+  background: var(--blue);
+  color: #fff;
+  box-shadow: 0 4px 16px #4d9fff44;
+}
+
+/* ── ONLINE SETUP ── */
+.online-player-setup { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; }
+.online-name-input {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 18px;
+  border-radius: 12px;
+  border: 2px solid #4a3080;
+  background: #2a1650;
+  color: #fff;
+  font-size: 1.1rem;
+  font-family: "Heebo", sans-serif;
+  text-align: center;
+}
+.online-name-input:focus { outline: none; border-color: var(--blue); }
+.online-avatar-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 380px;
+}
+.online-actions { display: flex; flex-direction: column; align-items: center; gap: 14px; width: 100%; }
+.online-divider { color: #6a5090; font-size: 0.9rem; }
+.join-row { display: flex; gap: 10px; align-items: center; }
+.join-code-input {
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 2px solid #4a3080;
+  background: #2a1650;
+  color: #fff;
+  font-size: 1.1rem;
+  font-family: "Heebo", sans-serif;
+  text-align: center;
+  width: 160px;
+  letter-spacing: 4px;
+}
+.join-code-input:focus { outline: none; border-color: var(--blue); }
+.join-btn { padding: 12px 20px; font-size: 1rem; }
+.online-error {
+  color: var(--pink);
+  background: #3a0a20;
+  border: 1px solid var(--pink);
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* ── LOBBY SCREEN ── */
+#lobby-screen {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px 20px;
+}
+.lobby-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 480px;
+}
+.room-code-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #2a1650;
+  border: 2px solid var(--blue);
+  border-radius: 16px;
+  padding: 14px 24px;
+  font-size: 1rem;
+  color: #b0a0d0;
+}
+.room-code-text {
+  font-family: monospace;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 6px;
+}
+.copy-btn {
+  background: none;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: transform .15s;
+}
+.copy-btn:hover { transform: scale(1.2); }
+.lobby-players {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-height: 80px;
+}
+.lobby-player {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #2a1650;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e0d0ff;
+  border: 1px solid #4a3080;
+}
+.lobby-player .host-crown { margin-right: auto; }
+.lobby-hint {
+  color: #7060a0;
+  font-size: 0.9rem;
+  text-align: center;
+}

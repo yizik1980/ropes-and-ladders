@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🐍 סולמות וחבלים – שפת הסימנים</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Heebo:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script type="module" src="src/main.js"></script>
+  </head>
+  <body>
+    <!-- SETUP -->
+    <div id="setup-screen" class="screen active">
+      <div class="game-title">
+        <span class="snake-deco">🐍</span>
+        <h1>סולמות וחבלים</h1>
+        <h1 style="color: #00c9a7; font-size: clamp(1.1rem, 3vw, 1.7rem)">
+          משחק ניחוש החיות 🐾
+        </h1>
+        <p>הטל קוביות, עלה בסולמות, היזהר מהחבלים! ענה נכון וזכה בנקודות!</p>
+      </div>
+
+      <!-- Mode tabs -->
+      <div class="mode-tabs">
+        <button class="mode-tab active" data-mode="local" onclick="setMode('local')">🏠 מקומי</button>
+        <button class="mode-tab" data-mode="online" onclick="setMode('online')">🌐 אונליין</button>
+      </div>
+
+      <!-- Local setup -->
+      <div id="local-setup">
+        <div class="player-count-selector">
+          <label>מספר שחקנים:</label>
+          <button class="count-btn selected" data-count="2" onclick="setPlayerCount(2)">2</button>
+          <button class="count-btn" data-count="3" onclick="setPlayerCount(3)">3</button>
+          <button class="count-btn" data-count="4" onclick="setPlayerCount(4)">4</button>
+        </div>
+        <div class="players-setup" id="players-setup"></div>
+        <button class="start-game-btn" onclick="startGame()">🎲 התחל משחק!</button>
+      </div>
+
+      <!-- Online setup -->
+      <div id="online-setup" class="hidden">
+        <div class="online-player-setup">
+          <input id="online-name" type="text" placeholder="🎮 השם שלך" class="online-name-input" />
+          <div class="online-avatar-row" id="online-avatars"></div>
+        </div>
+        <div class="online-actions">
+          <button class="start-game-btn" onclick="createRoom()">➕ צור חדר חדש</button>
+          <div class="online-divider">— או —</div>
+          <div class="join-row">
+            <input id="join-code" type="text" placeholder="קוד חדר (6 תווים)" maxlength="6"
+              class="join-code-input" style="text-transform:uppercase"
+              oninput="this.value=this.value.toUpperCase()" />
+            <button class="count-btn join-btn" onclick="joinRoomOnline()">🚪 הצטרף</button>
+          </div>
+        </div>
+        <div id="online-error" class="online-error hidden"></div>
+      </div>
+    </div>
+
+    <!-- LOBBY -->
+    <div id="lobby-screen" class="screen">
+      <div class="lobby-content">
+        <div class="game-title" style="margin-bottom:0">
+          <h1>🎮 לובי</h1>
+        </div>
+        <div class="room-code-box">
+          <span>קוד החדר:</span>
+          <strong id="lobby-code" class="room-code-text">------</strong>
+          <button id="copy-code-btn" class="copy-btn" onclick="copyRoomCode()">📋</button>
+        </div>
+        <div id="lobby-players" class="lobby-players"></div>
+        <p class="lobby-hint">שתף את הקוד עם חברים כדי שיצטרפו!</p>
+        <button id="start-online-btn" class="start-game-btn hidden" onclick="startOnlineGame()" disabled>
+          🎲 התחל משחק! (מינימום 2 שחקנים)
+        </button>
+      </div>
+    </div>
+
+    <!-- GAME -->
+    <div id="game-screen" class="screen">
+      <div class="top-bar">
+        <div class="top-bar-title">🐍 סולמות וחבלים 🪜</div>
+        <div class="players-strip" id="players-strip"></div>
+        <div class="legend">
+          <b>מפתח:</b>
+          <div class="legend-item">🪜 סולם – עולים!</div>
+          <div class="legend-item">🐍 חבל – יורדים...</div>
+          <div class="legend-item">❓ שאלה</div>
+          <div class="legend-item">✅ נכון = +3</div>
+          <div class="legend-item">❌ שגוי = -2</div>
+        </div>
+        <div class="dice-area">
+          <div class="dice-row">
+            <div class="die-container" id="die1-container">
+              <div class="die-cube" id="die1">
+                <div class="die-face face-1"><span>●</span></div>
+                <div class="die-face face-2"><span>●</span><span>●</span></div>
+                <div class="die-face face-3"><span>●</span><span>●</span><span>●</span></div>
+                <div class="die-face face-4"><span>●</span><span>●</span><span>●</span><span>●</span></div>
+                <div class="die-face face-5"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
+                <div class="die-face face-6"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
+              </div>
+            </div>
+            <div class="die-container" id="die2-container">
+              <div class="die-cube" id="die2">
+                <div class="die-face face-1"><span>●</span></div>
+                <div class="die-face face-2"><span>●</span><span>●</span></div>
+                <div class="die-face face-3"><span>●</span><span>●</span><span>●</span></div>
+                <div class="die-face face-4"><span>●</span><span>●</span><span>●</span><span>●</span></div>
+                <div class="die-face face-5"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
+                <div class="die-face face-6"><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span><span>●</span></div>
+              </div>
+            </div>
+          </div>
+          <button class="roll-btn" id="roll-btn" onclick="rollDice()">🎲 הטל קוביות</button>
+        </div>
+      </div>
+      <div class="game-main">
+        <div class="board-area">
+          <div class="board-wrapper">
+            <div id="game-board">
+              <div class="board-grid" id="board-grid"></div>
+              <svg id="board-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+              <div class="pawns-layer" id="pawns-layer"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIN -->
+    <div id="win-screen" class="screen">
+      <div style="font-size: 4rem; animation: spin 2s linear infinite">🎆</div>
+      <div class="win-title">🏆 מנצח/ת!</div>
+      <div class="win-avatar" id="win-avatar">🦁</div>
+      <div class="win-name" id="win-name">שחקן</div>
+      <div style="color: #b0a0d0; font-size: 1.1rem">הגיע/ה ראשון/ה לתא 100!</div>
+      <button class="play-again-btn" onclick="restartGame()">🔄 שחק שוב</button>
+    </div>
+
+    <!-- TRIVIA -->
+    <div id="trivia-overlay">
+      <div class="trivia-modal">
+        <h2>❓ שאלת חיות</h2>
+        <div class="trivia-question" id="trivia-question"></div>
+        <div id="trivia-sign-display"></div>
+        <div class="trivia-options" id="trivia-options"></div>
+        <div class="trivia-result" id="trivia-result"></div>
+      </div>
+    </div>
+  </body>
+</html>
