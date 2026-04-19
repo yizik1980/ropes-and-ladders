@@ -1,8 +1,8 @@
 import { TRIVIA } from "./constants.js";
 import { state } from "./state.js";
 import { updatePawns, renderStrip } from "./players.js";
-// game.js imports are resolved lazily (circular deps are fine in ES modules)
 import { nextTurn, showWinner } from "./game.js";
+import { playCorrect, playWin } from "./sounds.js";
 
 export function showTrivia(idx) {
   state.triviaActive = true;
@@ -19,8 +19,8 @@ export function showTrivia(idx) {
     const btn = document.createElement("button");
     btn.className = "trivia-opt";
     btn.textContent = opt;
-    btn.style.fontSize = "1.4rem";
-    btn.style.padding = "16px 28px";
+    btn.style.fontSize = "2.8rem";
+    btn.style.padding = "14px 20px";
     btn.onclick = () => answerTrivia(opt, q, idx, btn);
     oc.appendChild(btn);
   });
@@ -34,6 +34,7 @@ export function answerTrivia(ans, q, idx, btn) {
   document.querySelectorAll(".trivia-opt").forEach((b) => (b.disabled = true));
   const res = document.getElementById("trivia-result");
   if (ans === q.ans) {
+    playCorrect();
     btn.classList.add("correct");
     res.className = "trivia-result win";
     res.textContent = `✅ נכון! ${p.name} מתקדם/ת 3 תאים!`;
@@ -43,6 +44,7 @@ export function answerTrivia(ans, q, idx, btn) {
       updatePawns();
       renderStrip();
       if (p.pos === 100) {
+        playWin();
         showWinner(idx);
         return;
       }

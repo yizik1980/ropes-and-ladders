@@ -207,8 +207,8 @@ function showOnlineTrivia(question, room) {
     const btn = document.createElement('button');
     btn.className = 'trivia-opt';
     btn.textContent = opt;
-    btn.style.fontSize = '1.4rem';
-    btn.style.padding = '16px 28px';
+    btn.style.fontSize = '2.8rem';
+    btn.style.padding = '14px 20px';
     if (!isMyTurn) {
       btn.disabled = true;
       btn.title = 'לא התורך';

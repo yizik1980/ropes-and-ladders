@@ -61,16 +61,33 @@ export function playSnake() {
   });
 }
 
+export function playCorrect() {
+  // Bright ding-dong: two quick ascending bell tones
+  playTone({ type: "sine", freq: 880,  duration: 0.18, gain: 0.45, delay: 0,    gainEnd: 0 });
+  playTone({ type: "sine", freq: 1109, duration: 0.25, gain: 0.4,  delay: 0.16, gainEnd: 0 });
+  playTone({ type: "sine", freq: 1319, duration: 0.35, gain: 0.35, delay: 0.30, gainEnd: 0 });
+}
+
 export function playWin() {
-  // Victory fanfare
+  // Full victory fanfare with harmony
   const melody = [
-    { f: 523, d: 0.15 }, { f: 523, d: 0.15 }, { f: 523, d: 0.15 },
-    { f: 523, d: 0.35 }, { f: 415, d: 0.35 }, { f: 466, d: 0.35 },
-    { f: 523, d: 0.7 },
+    { f: 523, d: 0.12 }, { f: 523, d: 0.12 }, { f: 523, d: 0.12 },
+    { f: 523, d: 0.28 }, { f: 415, d: 0.28 }, { f: 466, d: 0.28 },
+    { f: 523, d: 0.55 },
+  ];
+  const harmony = [
+    { f: 659, d: 0.12 }, { f: 659, d: 0.12 }, { f: 659, d: 0.12 },
+    { f: 659, d: 0.28 }, { f: 523, d: 0.28 }, { f: 587, d: 0.28 },
+    { f: 659, d: 0.55 },
   ];
   let t = 0;
-  melody.forEach(({ f, d }) => {
-    playTone({ type: "triangle", freq: f, duration: d * 0.9, gain: 0.5, delay: t, gainEnd: 0 });
+  melody.forEach(({ f, d }, i) => {
+    playTone({ type: "triangle", freq: f,           duration: d * 0.88, gain: 0.45, delay: t, gainEnd: 0 });
+    playTone({ type: "triangle", freq: harmony[i].f, duration: d * 0.88, gain: 0.25, delay: t, gainEnd: 0 });
     t += d;
   });
+  // Final sparkle
+  [1047, 1319, 1568, 2093].forEach((f, i) =>
+    playTone({ type: "sine", freq: f, duration: 0.15, gain: 0.2, delay: t + i * 0.07, gainEnd: 0 })
+  );
 }
