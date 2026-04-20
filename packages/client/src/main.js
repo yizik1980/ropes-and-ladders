@@ -7,6 +7,7 @@ import {
   isOnline, createRoom, joinRoomOnline, startOnlineGame,
   rollDiceOnline, copyRoomCode, setOnlineAvatar, initOnlineUI,
 } from './online.js';
+import { setLang, lang } from './i18n.js';
 
 // Expose to HTML onclick handlers
 window.setPlayerCount = setPlayerCount;
@@ -28,6 +29,8 @@ window.setMode = (mode) => {
   );
   if (mode === 'online') initOnlineUI();
 };
+
+window.toggleLang = () => setLang(lang === 'he' ? 'en' : 'he');
 
 // Init
 renderSetupCards();

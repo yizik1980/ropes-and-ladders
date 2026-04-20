@@ -51,7 +51,7 @@ async function minifyHTML() {
     const minified = minifier.minify(html, {
       removeComments: true,
       collapseWhitespace: true,
-      minifyJS: true,
+      minifyJS: false,
       minifyCSS: true,
       removeEmptyAttributes: true,
       removeRedundantAttributes: true,

@@ -6,6 +6,7 @@ import { updatePawns, renderStrip } from './players.js';
 import { buildBoard } from './board.js';
 import { setDiceFaceRotation, showWinner } from './game.js';
 import { playDiceRoll, playMove, playLadder, playSnake, playWin } from './sounds.js';
+import { t } from './i18n.js';
 
 let socket = null;
 let myId = null;
@@ -33,7 +34,7 @@ function connect() {
 }
 
 export function createRoom() {
-  const name = document.getElementById('online-name').value.trim() || 'שחקן';
+  const name = document.getElementById('online-name').value.trim() || t('online.name');
   clearOnlineError();
   connect();
   socket.emit('create-room', { playerName: name, avatar: onlineAvatar }, ({ roomCode }) => {
@@ -45,8 +46,8 @@ export function createRoom() {
 
 export function joinRoomOnline() {
   const code = document.getElementById('join-code').value.trim().toUpperCase();
-  const name = document.getElementById('online-name').value.trim() || 'שחקן';
-  if (!code || code.length < 6) return showOnlineError('הכנס קוד חדר בן 6 תווים');
+  const name = document.getElementById('online-name').value.trim() || t('online.name');
+  if (!code || code.length < 6) return showOnlineError(t('err.code'));
   clearOnlineError();
   connect();
   socket.emit('join-room', { roomCode: code, playerName: name, avatar: onlineAvatar }, (res) => {
@@ -174,10 +175,10 @@ function onTriviaAnswered({ correct, correctAnswer, playerIdx, won, room }) {
   const res = document.getElementById('trivia-result');
   if (correct) {
     res.className = 'trivia-result win';
-    res.textContent = `✅ נכון! ${state.players[playerIdx]?.name} מתקדם/ת 3 תאים!`;
+    res.textContent = t('trivia.ok', state.players[playerIdx]?.name);
   } else {
     res.className = 'trivia-result lose';
-    res.textContent = `❌ טעות! הנכון: ${correctAnswer}`;
+    res.textContent = t('trivia.fail.online', correctAnswer);
     document.querySelectorAll('.trivia-opt').forEach(b => {
       if (b.textContent === correctAnswer) b.classList.add('correct');
     });
@@ -196,7 +197,7 @@ function showOnlineTrivia(question, room) {
   state.triviaAnswered = false;
   const isMyTurn = room.players[room.currentPlayer]?.id === myId;
 
-  document.getElementById('trivia-question').textContent = `איזו חיה מתחילה באות "${question.img}"?`;
+  document.getElementById('trivia-question').textContent = t('trivia.q', question.img);
   document.getElementById('trivia-sign-display').innerHTML =
     `<div style="font-size:8rem;margin-bottom:20px;font-weight:bold;color:var(--blue)">${question.img}</div>`;
   document.getElementById('trivia-result').className = 'trivia-result';
@@ -244,8 +245,8 @@ function updateRollBtn(room) {
   const isMyTurn = room.players[room.currentPlayer]?.id === myId;
   btn.disabled = !isMyTurn;
   btn.textContent = isMyTurn
-    ? '🎲 הטל קוביות'
-    : `⏳ תור: ${room.players[room.currentPlayer]?.name}`;
+    ? t('btn.roll')
+    : t('roll.wait', room.players[room.currentPlayer]?.name);
 }
 
 function showOnlineError(msg) {

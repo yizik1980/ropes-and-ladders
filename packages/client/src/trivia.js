@@ -3,13 +3,13 @@ import { state } from "./state.js";
 import { updatePawns, renderStrip } from "./players.js";
 import { nextTurn, showWinner } from "./game.js";
 import { playCorrect, playWin } from "./sounds.js";
+import { t } from "./i18n.js";
 
 export function showTrivia(idx) {
   state.triviaActive = true;
   state.triviaAnswered = false;
   const q = TRIVIA[Math.floor(Math.random() * TRIVIA.length)];
-  document.getElementById("trivia-question").textContent =
-    `איזו חיה מתחילה באות "${q.img}"?`;
+  document.getElementById("trivia-question").textContent = t('trivia.q', q.img);
   document.getElementById("trivia-sign-display").innerHTML =
     `<div style="font-size:8rem;margin-bottom:20px;font-weight:bold;color:var(--blue)">${q.img}</div>`;
   document.getElementById("trivia-result").className = "trivia-result";
@@ -37,7 +37,7 @@ export function answerTrivia(ans, q, idx, btn) {
     playCorrect();
     btn.classList.add("correct");
     res.className = "trivia-result win";
-    res.textContent = `✅ נכון! ${p.name} מתקדם/ת 3 תאים!`;
+    res.textContent = t('trivia.ok', p.name);
     setTimeout(() => {
       closeTrivia();
       p.pos = Math.min(p.pos + 3, 100);
@@ -56,7 +56,7 @@ export function answerTrivia(ans, q, idx, btn) {
       if (b.textContent === q.ans) b.classList.add("correct");
     });
     res.className = "trivia-result lose";
-    res.textContent = `❌ טעות! הנכון: ${q.ans}. ${p.name} חוזר/ת 2 תאים.`;
+    res.textContent = t('trivia.fail', q.ans, p.name);
     setTimeout(() => {
       closeTrivia();
       p.pos = Math.max(p.pos - 2, 1);
