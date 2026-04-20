@@ -1,5 +1,22 @@
-const SNAKES = { 99: 21, 87: 24, 62: 19, 54: 34, 46: 5, 92: 73, 75: 32 };
-const LADDERS = { 4: 56, 13: 76, 20: 38, 28: 84, 40: 59, 51: 67, 63: 81, 71: 91 };
+function generateBoard() {
+  const used = new Set([1, 100]);
+  const snakes = {}, ladders = {};
+  let att = 0;
+  while (Object.keys(snakes).length < 7 && att++ < 2000) {
+    const head = 15 + Math.floor(Math.random() * 84);
+    const tail = Math.max(2, head - 40) + Math.floor(Math.random() * Math.max(1, Math.min(30, head - 12)));
+    if (tail >= head - 9 || used.has(head) || used.has(tail)) continue;
+    snakes[head] = tail; used.add(head); used.add(tail);
+  }
+  att = 0;
+  while (Object.keys(ladders).length < 8 && att++ < 2000) {
+    const bottom = 2 + Math.floor(Math.random() * 79);
+    const top = bottom + 10 + Math.floor(Math.random() * Math.min(40, 98 - bottom - 9));
+    if (top > 98 || used.has(bottom) || used.has(top)) continue;
+    ladders[bottom] = top; used.add(bottom); used.add(top);
+  }
+  return { snakes, ladders };
+}
 
 const TRIVIA = [
   { img: "א", opts: ["🐶", "🦁", "🐴", "🐘"], ans: "🦁" },
@@ -43,6 +60,8 @@ export function createRoom(socketId, playerName, avatar) {
     currentPlayer: 0,
     triviaCells: [],
     triviaQuestion: null,
+    snakes: {},
+    ladders: {},
   });
   return { roomCode };
 }
@@ -64,6 +83,8 @@ export function getRoom(roomCode) {
     triviaQuestion: room.triviaQuestion
       ? { img: room.triviaQuestion.img, opts: room.triviaQuestion.opts }
       : null,
+    snakes: room.snakes,
+    ladders: room.ladders,
   };
 }
 
@@ -83,6 +104,10 @@ export function startGame(roomCode, hostId) {
   room.started = true;
   room.currentPlayer = 0;
   room.triviaCells = generateTriviaCells();
+  const board = generateBoard();
+  room.snakes = board.snakes;
+  room.ladders = board.ladders;
+  room.triviaPool = [...TRIVIA].sort(() => Math.random() - 0.5);
   room.players.forEach(p => { p.pos = 1; });
   return getRoom(roomCode);
 }
@@ -102,15 +127,15 @@ export function rollDice(roomCode, socketId) {
 
   if (cp.pos === 100) {
     eventType = 'win';
-  } else if (SNAKES[cp.pos]) {
+  } else if (room.snakes[cp.pos]) {
     eventType = 'snake';
-    cp.pos = SNAKES[cp.pos];
-  } else if (LADDERS[cp.pos]) {
+    cp.pos = room.snakes[cp.pos];
+  } else if (room.ladders[cp.pos]) {
     eventType = 'ladder';
-    cp.pos = LADDERS[cp.pos];
+    cp.pos = room.ladders[cp.pos];
   } else if (room.triviaCells.includes(cp.pos)) {
     eventType = 'trivia';
-    room.triviaQuestion = TRIVIA[Math.floor(Math.random() * TRIVIA.length)];
+    room.triviaQuestion = room.triviaPool.shift();
   }
 
   if (eventType !== 'win' && eventType !== 'trivia') {

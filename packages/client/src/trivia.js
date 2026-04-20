@@ -1,4 +1,3 @@
-import { TRIVIA } from "./constants.js";
 import { state } from "./state.js";
 import { updatePawns, renderStrip } from "./players.js";
 import { nextTurn, showWinner } from "./game.js";
@@ -8,7 +7,7 @@ import { t } from "./i18n.js";
 export function showTrivia(idx) {
   state.triviaActive = true;
   state.triviaAnswered = false;
-  const q = TRIVIA[Math.floor(Math.random() * TRIVIA.length)];
+  const q = state.triviaPool.shift();
   document.getElementById("trivia-question").textContent = t('trivia.q', q.img);
   document.getElementById("trivia-sign-display").innerHTML =
     `<div style="font-size:8rem;margin-bottom:20px;font-weight:bold;color:var(--blue)">${q.img}</div>`;

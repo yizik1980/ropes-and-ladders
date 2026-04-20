@@ -143,6 +143,8 @@ function onRoomUpdated(room) {
 
 function onGameStarted(room) {
   _online = true;
+  state.snakes = room.snakes || {};
+  state.ladders = room.ladders || {};
   syncState(room);
   document.getElementById('lobby-screen').classList.remove('active');
   document.getElementById('game-screen').classList.add('active');

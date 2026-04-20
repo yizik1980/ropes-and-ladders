@@ -1,5 +1,5 @@
-import { PCOLORS, SNAKES, LADDERS } from "./constants.js";
-import { TRIVIA_CELLS, state } from "./state.js";
+import { PCOLORS, TRIVIA } from "./constants.js";
+import { TRIVIA_CELLS, state, generateBoard } from "./state.js";
 import { buildBoard, drawOverlay } from "./board.js";
 import { renderStrip, updatePawns } from "./players.js";
 import { renderSetupCards } from "./setup.js";
@@ -30,6 +30,10 @@ export function startGame() {
   });
   state.currentPlayer = 0;
   state.gameStarted = true;
+  const board = generateBoard();
+  state.snakes = board.snakes;
+  state.ladders = board.ladders;
+  state.triviaPool = [...TRIVIA].sort(() => Math.random() - 0.5);
   /* global __API_URL__ */
   const _apiUrl = typeof __API_URL__ !== "undefined" ? __API_URL__ : "";
   fetch(`${_apiUrl}/api/game`, {
@@ -92,8 +96,8 @@ export function checkCell(idx, pos) {
     showWinner(idx);
     return;
   }
-  if (SNAKES[pos]) {
-    const np = SNAKES[pos];
+  if (state.snakes[pos]) {
+    const np = state.snakes[pos];
     playSnake();
     setTimeout(() => {
       p.pos = np;
@@ -103,8 +107,8 @@ export function checkCell(idx, pos) {
     }, 700);
     return;
   }
-  if (LADDERS[pos]) {
-    const np = LADDERS[pos];
+  if (state.ladders[pos]) {
+    const np = state.ladders[pos];
     playLadder();
     setTimeout(() => {
       p.pos = np;
