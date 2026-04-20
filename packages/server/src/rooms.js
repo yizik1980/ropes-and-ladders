@@ -126,6 +126,17 @@ export function rollDice(roomCode, socketId) {
   };
 }
 
+export function getOpenRooms() {
+  return [...rooms.values()]
+    .filter(r => !r.started && r.players.length < 4)
+    .map(r => ({
+      code: r.code,
+      hostName: r.players[0]?.name,
+      hostAvatar: r.players[0]?.avatar,
+      playerCount: r.players.length,
+    }));
+}
+
 export function answerTrivia(roomCode, socketId, answer) {
   const room = rooms.get(roomCode);
   if (!room || !room.triviaQuestion) return null;

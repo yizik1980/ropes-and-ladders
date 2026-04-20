@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import {
   createRoom, joinRoom, getRoom, removePlayer,
-  startGame, rollDice, answerTrivia,
+  startGame, rollDice, answerTrivia, getOpenRooms,
 } from './rooms.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -21,11 +21,14 @@ app.post('/api/game', (_req, res) => res.json({ ok: true }));
 app.get('/{*path}', (_req, res) => res.sendFile(path.join(CLIENT_DIST, 'index.html')));
 
 io.on('connection', (socket) => {
+  socket.on('get-rooms', (cb) => cb(getOpenRooms()));
+
   socket.on('create-room', ({ playerName, avatar }, cb) => {
     const { roomCode } = createRoom(socket.id, playerName, avatar);
     socket.join(roomCode);
     cb({ roomCode });
     io.to(roomCode).emit('room-updated', getRoom(roomCode));
+    io.emit('rooms-updated', getOpenRooms());
   });
 
   socket.on('join-room', ({ roomCode, playerName, avatar }, cb) => {
@@ -35,6 +38,7 @@ io.on('connection', (socket) => {
     socket.join(code);
     cb({ ok: true });
     io.to(code).emit('room-updated', getRoom(code));
+    io.emit('rooms-updated', getOpenRooms());
   });
 
   socket.on('start-game', ({ roomCode }) => {
@@ -59,6 +63,7 @@ io.on('connection', (socket) => {
       const roomData = getRoom(room);
       if (roomData) io.to(room).emit('room-updated', roomData);
     }
+    io.emit('rooms-updated', getOpenRooms());
   });
 });
 

@@ -66,7 +66,6 @@ export function rollDice() {
     setDiceFaceRotation(die1, d1);
     setDiceFaceRotation(die2, d2);
   }, 600);
-  const p = state.players[state.currentPlayer];
   setTimeout(() => movePlayer(state.currentPlayer, tot), 800);
 }
 

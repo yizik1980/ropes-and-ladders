@@ -5,7 +5,7 @@ import { PCOLORS, AVATARS } from './constants.js';
 import { updatePawns, renderStrip } from './players.js';
 import { buildBoard } from './board.js';
 import { setDiceFaceRotation, showWinner } from './game.js';
-import { playDiceRoll, playMove, playLadder, playSnake, playWin } from './sounds.js';
+import { playDiceRoll, playMove, playLadder, playSnake, playWin, playCorrect } from './sounds.js';
 import { t } from './i18n.js';
 
 let socket = null;
@@ -95,7 +95,32 @@ export function initOnlineUI() {
     btn.onclick = () => setOnlineAvatar(a, btn);
     container.appendChild(btn);
   });
+  connect();
+  socket.off('rooms-updated', renderRoomsList);
+  socket.on('rooms-updated', renderRoomsList);
+  socket.emit('get-rooms', renderRoomsList);
 }
+
+function renderRoomsList(rooms) {
+  const el = document.getElementById('rooms-list');
+  if (!el) return;
+  if (!rooms || rooms.length === 0) {
+    el.innerHTML = `<div class="rooms-empty" data-i18n="rooms.empty">${t('rooms.empty')}</div>`;
+    return;
+  }
+  el.innerHTML = rooms.map(r => `
+    <button class="room-item" onclick="window._joinRoom('${r.code}')">
+      <span class="room-host">${r.hostAvatar} ${r.hostName}</span>
+      <span class="room-count">${r.playerCount}/4</span>
+      <span class="room-code-label">${r.code}</span>
+    </button>
+  `).join('');
+}
+
+window._joinRoom = (code) => {
+  document.getElementById('join-code').value = code;
+  joinRoomOnline();
+};
 
 function showLobby(roomCode, isHost) {
   document.getElementById('setup-screen').classList.remove('active');
@@ -174,6 +199,7 @@ function onTriviaAnswered({ correct, correctAnswer, playerIdx, won, room }) {
 
   const res = document.getElementById('trivia-result');
   if (correct) {
+    playCorrect();
     res.className = 'trivia-result win';
     res.textContent = t('trivia.ok', state.players[playerIdx]?.name);
   } else {
