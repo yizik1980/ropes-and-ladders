@@ -1,10 +1,11 @@
 import { PCOLORS, TRIVIA } from "./constants.js";
-import { TRIVIA_CELLS, state, generateBoard } from "./state.js";
+import { TRIVIA_CELLS, state, generateBoard, storage } from "./state.js";
 import { buildBoard, drawOverlay } from "./board.js";
 import { renderStrip, updatePawns } from "./players.js";
 import { renderSetupCards } from "./setup.js";
 import { showTrivia } from "./trivia.js";
 import { playDiceRoll, playMove, playLadder, playSnake, playWin } from "./sounds.js";
+import { t } from "./i18n.js";
 
 const DIE_ROTATIONS = {
   1: "rotateX(0deg) rotateY(0deg)",
@@ -26,6 +27,7 @@ export function startGame() {
     const sel = document.querySelector(`#avatars-${i} .avatar-opt.selected`);
     if (sel) p.avatar = sel.textContent;
     p.pos = 1;
+    p.score = 0;
     p.color = PCOLORS[i];
   });
   state.currentPlayer = 0;
@@ -98,6 +100,7 @@ export function checkCell(idx, pos) {
   }
   if (state.snakes[pos]) {
     const np = state.snakes[pos];
+    p.score = Math.max(0, (p.score || 0) - 3);
     playSnake();
     setTimeout(() => {
       p.pos = np;
@@ -109,6 +112,7 @@ export function checkCell(idx, pos) {
   }
   if (state.ladders[pos]) {
     const np = state.ladders[pos];
+    p.score = (p.score || 0) + 5;
     playLadder();
     setTimeout(() => {
       p.pos = np;
@@ -138,6 +142,22 @@ export function showWinner(idx) {
   document.getElementById("win-name").textContent = p.name;
   document.getElementById("game-screen").classList.remove("active");
   document.getElementById("win-screen").classList.add("active");
+
+  const scoreEl = document.getElementById("win-score");
+  const hiEl = document.getElementById("win-highscore");
+  if (state.players.length === 1) {
+    const score = p.score || 0;
+    const hi = parseInt(storage.getItem("soloHighScore")) || 0;
+    const isNew = score > hi;
+    if (isNew) storage.setItem("soloHighScore", score);
+    scoreEl.textContent = t("solo.score", score);
+    scoreEl.classList.remove("hidden");
+    hiEl.textContent = isNew ? t("solo.newrecord") : t("solo.highscore", Math.max(score, hi));
+    hiEl.classList.remove("hidden");
+  } else {
+    scoreEl.classList.add("hidden");
+    hiEl.classList.add("hidden");
+  }
   const cols = [
     "#ffd700",
     "#ff6b35",

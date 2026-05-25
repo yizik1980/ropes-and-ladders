@@ -737,6 +737,25 @@ body {
   font-size: 2rem;
   color: white;
 }
+.win-score {
+  font-family: "Fredoka One", cursive;
+  font-size: 2rem;
+  color: var(--teal);
+  text-shadow: 0 0 20px #00c9a744;
+}
+.win-highscore {
+  font-size: 1rem;
+  color: #b0a0d0;
+  font-weight: 600;
+}
+.chip-score {
+  font-family: "Fredoka One", cursive;
+  font-size: 0.85rem;
+  background: #1a0a2e;
+  border-radius: 10px;
+  padding: 1px 7px;
+  color: var(--teal);
+}
 .play-again-btn {
   background: linear-gradient(135deg, var(--gold), var(--accent));
   color: var(--bg);

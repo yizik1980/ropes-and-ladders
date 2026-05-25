@@ -33,6 +33,7 @@ export function answerTrivia(ans, q, idx, btn) {
   document.querySelectorAll(".trivia-opt").forEach((b) => (b.disabled = true));
   const res = document.getElementById("trivia-result");
   if (ans === q.ans) {
+    p.score = (p.score || 0) + 10;
     playCorrect();
     btn.classList.add("correct");
     res.className = "trivia-result win";
@@ -50,6 +51,7 @@ export function answerTrivia(ans, q, idx, btn) {
       setTimeout(() => nextTurn(), 1000);
     }, 1700);
   } else {
+    p.score = Math.max(0, (p.score || 0) - 5);
     btn.classList.add("wrong");
     document.querySelectorAll(".trivia-opt").forEach((b) => {
       if (b.textContent === q.ans) b.classList.add("correct");

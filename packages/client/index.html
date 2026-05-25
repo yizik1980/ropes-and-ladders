@@ -150,6 +150,13 @@
           <div class="player-count-selector">
             <label data-i18n="players.label">מספר שחקנים:</label>
             <button
+              class="count-btn"
+              data-count="1"
+              onclick="setPlayerCount(1)"
+            >
+              1
+            </button>
+            <button
               class="count-btn selected"
               data-count="2"
               onclick="setPlayerCount(2)"
@@ -359,6 +366,8 @@
       <div class="win-avatar" id="win-avatar">🦁</div>
       <div class="win-name" id="win-name">שחקן</div>
       <div class="win-sub" data-i18n="win.sub">הגיע/ה ראשון/ה לתא 100!</div>
+      <div id="win-score" class="win-score hidden"></div>
+      <div id="win-highscore" class="win-highscore hidden"></div>
       <button
         class="play-again-btn"
         data-i18n="btn.again"

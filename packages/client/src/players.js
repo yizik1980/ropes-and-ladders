@@ -10,9 +10,13 @@ export function renderStrip() {
     chip.className = "player-chip" + (i === state.currentPlayer ? " active" : "");
     chip.id = `chip-${i}`;
     chip.style.borderColor = i === state.currentPlayer ? PCOLORS[i] : "#4a3080";
+    const scoreTag = state.players.length === 1
+      ? `<span class="chip-score">⭐ ${p.score || 0}</span>`
+      : '';
     chip.innerHTML = `<span class="chip-avatar">${p.avatar}</span>
       <span class="chip-name">${p.name}</span>
-      <span class="chip-pos" style="color:${PCOLORS[i]}">${p.pos}</span>`;
+      <span class="chip-pos" style="color:${PCOLORS[i]}">${p.pos}</span>
+      ${scoreTag}`;
     strip.appendChild(chip);
   });
 }
